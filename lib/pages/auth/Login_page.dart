@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled/pages/auth/LoginController.dart';
 import 'package:untitled/pages/auth/Register_Page.dart';
+class Login_page extends StatelessWidget{
+   Login_page({Key? key}) : super(key: key);
+  final controller = Get.put(LoginController());
+   GlobalKey loginFormKey=new GlobalKey<FormState>();
 
-class Login_page extends GetView<LoginController> {
-  @override
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -17,7 +19,7 @@ class Login_page extends GetView<LoginController> {
           height: context.height,
           child: SingleChildScrollView(
             child: Form(
-              key: controller.loginFormKey,
+              key: loginFormKey,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(
                 children: [
@@ -49,11 +51,9 @@ class Login_page extends GetView<LoginController> {
                       labelText: "Email",
                       prefixIcon: Icon(Icons.email),
                     ),
-                    keyboardType: TextInputType.emailAddress,
+                    keyboardType: TextInputType.text,
                     controller: controller.emailController,
-                    onSaved: (value) {
-                      controller.email = value!;
-                    },
+
                     validator: (value) {
                       return controller.validateEmail(value!);
                     },
@@ -66,15 +66,12 @@ class Login_page extends GetView<LoginController> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      labelText: "Password",
-                      prefixIcon: Icon(Icons.lock),
+                      labelText: "mot de pass",
+                      prefixIcon: Icon(Icons.password),
                     ),
-                    keyboardType: TextInputType.visiblePassword,
+                    keyboardType: TextInputType.text,
+                    controller: controller.pdController,
                     obscureText: true,
-                    controller: controller.passwordController,
-                    onSaved: (value) {
-                      controller.password = value!;
-                    },
                     validator: (value) {
                       return controller.validatePassword(value!);
                     },
@@ -125,7 +122,7 @@ class Login_page extends GetView<LoginController> {
                         style: TextStyle(fontSize: 14, color: Color(0xFFB1EA37)),
                       ),
                       onPressed: () {
-                        Get.to(Register_Page());;
+                        Get.to(Register_Page());
                       },
                     ),
                   ),
@@ -137,4 +134,5 @@ class Login_page extends GetView<LoginController> {
       ),
     );
   }
+
 }

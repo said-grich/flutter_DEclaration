@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-
-import '../alerts/alerts_page.dart';
+import '../complaintsWedgets/complaint_page.dart';
 import '../home/home_page.dart';
 import '../news/complaint_page.dart';
 import '../profile/profile_page.dart';
@@ -12,25 +10,25 @@ import 'dashboard_controller.dart';
 class DashboardPage extends GetView<DashboardController> {
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<DashboardController>(
-      builder: (controller) {
         return Scaffold(
           body: SafeArea(
-            child: IndexedStack(
-              index: controller.tabIndex,
-              children: [
-                HomePage(),
-                ComplaintPage(),
-                AlertsPage(),
-                AccountPage(),
-              ],
-            ),
+            child:Obx((){
+             return IndexedStack(
+                index: controller.tabIndex.value,
+                children: [
+                  HomePage(),
+                  ComplaintPage(),
+                  Declarations_Page(),
+                  AccountPage(),
+                ],
+              );
+            })
           ),
-          bottomNavigationBar: BottomNavigationBar(
+          bottomNavigationBar:Obx(()=>BottomNavigationBar(
             unselectedItemColor: Colors.black,
             selectedItemColor: Colors.redAccent,
             onTap: controller.changeTabIndex,
-            currentIndex: controller.tabIndex,
+            currentIndex: controller.tabIndex.value,
             showSelectedLabels: true,
             showUnselectedLabels: true,
             type: BottomNavigationBarType.fixed,
@@ -54,10 +52,8 @@ class DashboardPage extends GetView<DashboardController> {
                 label: 'Profile',
               ),
             ],
-          ),
+          ),)
         );
-      },
-    );
   }
 
   _bottomNavigationBarItem({required IconData icon, required String label}) {

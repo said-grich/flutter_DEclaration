@@ -41,6 +41,12 @@ dependencies:
   http: ^0.13.4
   get_storage:
   image_picker: ^0.8.5+3
+  geolocator: ^8.0.0
+  carousel_slider: ^4.0.0
+  cached_network_image: ^3.2.0
+  shimmer: ^2.0.0
+  comment_box: ^0.0.17
+  font_awesome_flutter: ^10.1.0
 
 
 
@@ -55,6 +61,7 @@ flutter_native_splash:
   ios: true
   color: "#b1ea37"
   image: assets/images/logo_w.png
+
 
   android_gravity: center
   ios_content_mode: center

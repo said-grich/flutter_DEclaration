@@ -16,8 +16,8 @@ class MyApp extends StatelessWidget {
   var islogin=false;
   @override
   Widget build(BuildContext context) {
-    islogin=seesion.read("isLogin");
-
+    seesion.read("isLogin") ==null?islogin=false:islogin=seesion.read("isLogin");
+    print("==================================================================>"+seesion.read("isLogin").toString());
     return GetMaterialApp(
       initialRoute:islogin?AppRoutes.DASHBOARD:AppRoutes.LoginPage,
       getPages: AppPages.list,

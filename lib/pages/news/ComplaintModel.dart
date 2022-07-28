@@ -1,34 +1,36 @@
-class ComlaintModel {
-  int? id;
-  String? dateDecl;
-  String? content;
-  int? longitude;
-  int? latitude;
-  String? adresse;
-  Null? etatD;
-  Photo? photo;
-  String? categ;
 
-  ComlaintModel(
-      {this.id,
-        this.dateDecl,
-        this.content,
+class ComplaintModel {
+  int id=0;
+  String dateDecl="";
+  String content="";
+  String title="";
+  double? longitude;
+  String photoUri="";
+
+  double? latitude;
+  String adresse="";
+  String categ="";
+  List? listEtat;
+
+  ComplaintModel(
+      {required this.id,
+        required this.dateDecl,
+        required this.content,
+        required this.title,
         this.longitude,
         this.latitude,
-        this.adresse,
-        this.etatD,
-        this.photo,
-        this.categ});
+        required this.adresse,
+        required this.categ});
 
-  ComlaintModel.fromJson(Map<String, dynamic> json) {
+  ComplaintModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     dateDecl = json['dateDecl'];
     content = json['content'];
+    title = json['title'];
     longitude = json['longitude'];
+    photoUri = json['photoUri'];
     latitude = json['latitude'];
     adresse = json['adresse'];
-    etatD = json['etatD'];
-    photo = json['photo'] != null ? new Photo.fromJson(json['photo']) : null;
     categ = json['categ'];
   }
 
@@ -37,13 +39,11 @@ class ComlaintModel {
     data['id'] = this.id;
     data['dateDecl'] = this.dateDecl;
     data['content'] = this.content;
+    data['title'] = this.title;
+    data['photoUri'] = this.photoUri;
     data['longitude'] = this.longitude;
     data['latitude'] = this.latitude;
     data['adresse'] = this.adresse;
-    data['etatD'] = this.etatD;
-    if (this.photo != null) {
-      data['photo'] = this.photo!.toJson();
-    }
     data['categ'] = this.categ;
     return data;
   }
@@ -54,9 +54,9 @@ class Photo {
   String? name;
   String? type;
   Null? declaration;
-  String? data;
+  String data="";
 
-  Photo({this.id, this.name, this.type, this.declaration, this.data});
+  Photo({this.id, this.name, this.type, this.declaration, required this.data});
 
   Photo.fromJson(Map<String, dynamic> json) {
     id = json['id'];

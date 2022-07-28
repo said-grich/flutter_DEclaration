@@ -1,16 +1,29 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:untitled/pages/auth/LoginController.dart';
-import 'package:untitled/pages/auth/Register_Page.dart';
+
 import 'package:untitled/pages/profile/profileController.dart';
 
 class AccountPage extends GetView<ProfileController> {
+  final seesion = GetStorage();
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
+  var firstnameController = TextEditingController();
+  var lastnameController = TextEditingController();
+  var phoneController = TextEditingController();
+  var immController = TextEditingController();
+
+
 
   @override
   Widget build(BuildContext context) {
+    if(seesion.read("email")!=null){
+       this.readFromLocalStorege();
+    }
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+    readFromLocalStorege();
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -19,7 +32,7 @@ class AccountPage extends GetView<ProfileController> {
           height: context.height,
           child: SingleChildScrollView(
             child: Form(
-              key: controller.formKey,
+              key: _formKey,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(
                 children: [
@@ -46,7 +59,7 @@ class AccountPage extends GetView<ProfileController> {
                     ),
                     keyboardType: TextInputType.text,
                     obscureText: false,
-                    controller: controller.lastnameController,
+                    controller: this.lastnameController,
 
                     validator: (value) {
                       return controller.validatePassword(value!);
@@ -65,7 +78,7 @@ class AccountPage extends GetView<ProfileController> {
                     ),
                     keyboardType: TextInputType.text,
                     obscureText: false,
-                    controller: controller.firstnameController,
+                    controller: this.firstnameController,
 
                     validator: (value) {
                       return controller.validName(value!);
@@ -84,7 +97,7 @@ class AccountPage extends GetView<ProfileController> {
                       prefixIcon: Icon(Icons.email),
                     ),
                     keyboardType: TextInputType.emailAddress,
-                    controller: controller.emailController,
+                    controller: this.emailController,
 
                     validator: (value) {
                       return controller.validateEmail(value!);
@@ -103,7 +116,7 @@ class AccountPage extends GetView<ProfileController> {
                     ),
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: true,
-                    controller: controller.passwordController,
+                    controller: this.passwordController,
 
                     validator: (value) {
                       return controller.validatePassword(value!);
@@ -122,8 +135,7 @@ class AccountPage extends GetView<ProfileController> {
                       prefixIcon: Icon(Icons.perm_identity),
                     ),
                     keyboardType: TextInputType.text,
-                    obscureText: true,
-                    controller: controller.immController,
+                    controller: this.immController,
 
                   ),
 
@@ -138,10 +150,8 @@ class AccountPage extends GetView<ProfileController> {
                       labelText: "numéro de téléphone",
                       prefixIcon: Icon(Icons.phone),
                     ),
-
                     keyboardType: TextInputType.text,
-                    obscureText: true,
-                    controller: controller.phoneController,
+                    controller: this.phoneController,
 
                   ),
 
@@ -167,7 +177,7 @@ class AccountPage extends GetView<ProfileController> {
                         style: TextStyle(fontSize: 14, color: Colors.white),
                       ),
                       onPressed: () {
-                        controller.checkLogin();
+                        print("ubdate");
                       },
                     ),
                   ),
@@ -206,5 +216,13 @@ class AccountPage extends GetView<ProfileController> {
         ),
       ),
     );
+  }
+  Future<void> readFromLocalStorege() async {
+    var islogin= seesion.read("isLogin");
+    this.emailController.text= seesion.read("email");
+    this.lastnameController.text=seesion.read("name");
+    this.firstnameController.text=seesion.read("firstname");
+    this.immController.text=seesion.read("cin");
+    this.phoneController.text=seesion.read("phone");
   }
 }

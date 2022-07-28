@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'dart:convert';
 import 'dart:developer';
@@ -5,38 +9,51 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:untitled/pages/auth/Login_page.dart';
 
+import '../../Constant.dart';
 import '../../Model/UserModel.dart';
 import 'package:http/http.dart' as http;
 
+import '../complaintsWedgets/ComplaintListController.dart';
+import '../dashboard/dashboard_controller.dart';
 import '../dashboard/dashboard_page.dart';
 
 class ComplaintController extends GetxController {
-  GlobalKey<FormState> profileFormKey = GlobalObjectKey<FormState>(3);
-  late TextEditingController emailController, passwordController,firstnameController,lastnameController,phoneController,immController;
+  ListDeclarationController listController= Get.find();
+  final dashcontroller = Get.put(DashboardController());
+
+  late TextEditingController descController,addressController,cateController,titreConroller;
   final seesion = GetStorage();
+  var selectedImagePath=''.obs;
+  var selectedImageSize=''.obs;
+  var userEmail='';
+
+
+  Future<void> getImage(ImageSource imageSource) async {
+    final pickelFile =await ImagePicker().getImage(source: imageSource);
+    if(pickelFile!=null){
+      selectedImagePath.value=pickelFile.path;
+      selectedImageSize.value=(File(selectedImagePath.value).lengthSync()/1024/1024).toStringAsFixed(2)+" MB";
+    }else{
+      Get.snackbar("Error", "No image selected", snackPosition: SnackPosition.BOTTOM,backgroundColor: Colors.redAccent,colorText: Colors.white);
+    }
+  }
 
   @override
   void onInit() async{
     super.onInit();
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
-    firstnameController = TextEditingController();
-    lastnameController = TextEditingController();
-    phoneController = TextEditingController();
-    immController = TextEditingController();
-    await this.readFromLocalStorege();
+    descController = TextEditingController();
+    addressController = TextEditingController();
+    cateController = TextEditingController();
+    titreConroller = TextEditingController();
+    if(this.seesion.read("email")!=null){
+      this.userEmail=this.seesion.read("email");
 
+    }
   }
-  Future<void> readFromLocalStorege() async {
-    var islogin= seesion.read("isLogin");
-    this.emailController.text= seesion.read("email");
-    this.lastnameController.text=seesion.read("name");
-    this.firstnameController.text=seesion.read("firstname");
-    this.immController.text=seesion.read("cin");
-    this.phoneController.text=seesion.read("phone");
-  }
+
 
   @override
   void onReady() {
@@ -45,64 +62,62 @@ class ComplaintController extends GetxController {
 
   @override
   void onClose() {
-    emailController.dispose();
-    passwordController.dispose();
-    emailController.dispose();
-    passwordController.dispose();
+
   }
 
-  String? validateEmail(String value) {
-    if (!GetUtils.isEmail(value)) {
-      return "Fournir un e-mail valide";
+  void valider() async {
+    try{
+    var request = http.MultipartRequest('POST', Uri.parse(Constant().baseUrl+"declaration/newDeclaration/"));
+    request.files.add(
+        await http.MultipartFile.fromPath(
+            'file',
+            this.selectedImagePath.value
+        )
+    );
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        Get.snackbar("Error", "Location permissions are denied",backgroundColor: Colors.redAccent,colorText: Colors.white);
+      }else if(permission == LocationPermission.deniedForever){
+        Get.snackbar("Error", "Location permissions are permanently denied",backgroundColor: Colors.redAccent,colorText: Colors.white);
+      }else{
+        Get.snackbar("Error", "GPS Location service is granted",backgroundColor: Colors.redAccent,colorText: Colors.white);
+      }
     }
-    return null;
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    print(position.longitude);
+    print(position.latitude);
+
+    String long = position.longitude.toString();
+    String lat = position.latitude.toString();
+    var data='{"title":"'+titreConroller.text+'","content":"'+descController.text+'","longitude":'+long+',"latitude":'+lat+',"adresse":"'+addressController.text+'","categ":"'+cateController.text+'"}';
+    print(data);
+    request.fields['email'] = seesion.read("email");
+    request.fields['declaration'] =data;
+    var res = await request.send();
+    if(res.statusCode==200){
+      this.selectedImagePath.value='';
+      addressController.text='';
+      descController.text='';
+      this.titreConroller.text='';
+      this.cateController.text='';
+      this.listController.getAllDeclaration();
+      dashcontroller.tabIndex.value=0;
+      Get.to(()=>DashboardPage());
+      Get.snackbar("Succes", "La déclaration est envoyée",backgroundColor: Colors.green,colorText: Colors.white);
+
+    }
+    else{
+      Get.snackbar("Error", "Server Error",backgroundColor: Colors.redAccent,colorText: Colors.white);
+    }
+
   }
+  catch(e){
+      print(e);
+}
 
-  String? validatePassword(String value) {
-    if (value.length < 6) {
-      return "Le mot de passe doit comporter 6 caractères";
-    }
-    return null;
-  }
-  String? valid_phone(String value) {
-    var matcher =RegExp(r'^(?:(?:(?:\+|00)212[\s]?(?:[\s]?\(0\)[\s]?)?)|0){1}(?:5[\s.-]?[2-3]|6[\s.-]?[13-9]){1}[0-9]{1}(?:[\s.-]?\d{2}){3}$').hasMatch(value);
-
-    if (value.length < 10) {
-      return "numéro de téléphone invalide";
-    }
-    if(matcher==false){
-      return "numéro de téléphone invalide";
-    }
-    return null;
-  }
-  String? validName(String value) {
-    if (value.length < 2) {
-      return "entrez un nom valide";
-    }
-    var matcher =RegExp(r"/^[a-z ,.'-]+\$/i").hasMatch(value);
-    if(matcher==false){
-      return "entrez un nom valide";
-    }
-
-
-    return null;
-  }
-
-  void checkLogin() {
-    final isValid = profileFormKey.currentState!.validate();
-    if (!isValid) {
-      return;
-    }
-    profileFormKey.currentState!.save();
-  }
-
-  Future<void> logout() async {
-    await seesion.erase();
-    Future.delayed(Duration.zero, () {
-      Get.to(Login_page());
-    });
-    seesion.write("isLogin", false);
-  }
-
+}
 
 }

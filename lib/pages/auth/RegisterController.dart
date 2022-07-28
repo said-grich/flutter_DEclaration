@@ -1,19 +1,18 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
+import '../../Constant.dart';
 import '../../Model/UserModel.dart';
 import '../dashboard/dashboard_page.dart';
 
 
 class RegisterController extends GetxController{
-
-   GlobalKey<FormState> RegisterFormKey = GlobalObjectKey<FormState>(2);
-
-  late TextEditingController emailController, passwordController,firstnameController,lastnameController,phoneController,immController;
+  late TextEditingController mailController, password2Controller,firstnameController,lastnameController,phoneController,immController;
   var email = '';
   var password = '';
   var firstname = '';
@@ -26,8 +25,8 @@ class RegisterController extends GetxController{
    @override
   void onInit() {
     super.onInit();
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
+    mailController = TextEditingController();
+    password2Controller = TextEditingController();
     firstnameController = TextEditingController();
     lastnameController = TextEditingController();
     phoneController = TextEditingController();
@@ -38,12 +37,13 @@ class RegisterController extends GetxController{
   @override
   void onReady() {
     super.onReady();
+
   }
 
   @override
   void onClose() {
-    emailController.dispose();
-    passwordController.dispose();
+    mailController.dispose();
+    password2Controller.dispose();
     firstnameController.dispose();
     lastnameController.dispose();
     immController.dispose();
@@ -84,7 +84,7 @@ class RegisterController extends GetxController{
     return null;
   }
 
-   Future<void> checkLogin() async{
+   Future<void> checkSingup() async{
     // final isValid = RegisterFormKey.currentState!.validate();
     // if (!isValid) {
      await singup();
@@ -94,26 +94,31 @@ class RegisterController extends GetxController{
    Future<void> singup() async {
      try{
        isDataLoading(true);
+       print(this.immController.text);
        var res= await http.post(
-           Uri.parse('http://192.168.43.77:8090/auth/singup'),
+           Uri.parse(Constant().baseUrl+'auth/singup'),
            headers: <String, String>{
              'Content-Type': 'application/json; charset=UTF-8',
            },
-           body: jsonEncode(<String, String>{
-             'email': this.emailController.text,
-             'password': this.passwordController.text,
+           body: jsonEncode(<String, Object>{
+             'email': this.mailController.text,
+             'password': this.password2Controller.text,
              'nom':this.lastnameController.text,
              'prenom':this.firstnameController.text,
              'telephone':this.phoneController.text,
              'cin':this.immController.text,
+             'role':1,
            }));
        print(res.statusCode);
        if (res.statusCode == 200) {
          if(res.body== "-1"){
-           print("user All ready ");
+           Get.snackbar("Error", "utilisateur existant",backgroundColor: Colors.redAccent,colorText: Colors.white);
+
          }
          else{
            var user =UserModel.fromJson(jsonDecode(res.body));
+           Get.snackbar("Succes", "se connecter avec succes",backgroundColor: Colors.green,colorText: Colors.white);
+
            this.userToLocalStoreg(user);
            Get.to(() => DashboardPage());
          }
@@ -121,25 +126,34 @@ class RegisterController extends GetxController{
        } else {
          // If the server did not return a 200 OK response,
          // then throw an exception.
-         throw Exception('Failed to load album');
+         Get.snackbar("Error", "Server Error",backgroundColor: Colors.redAccent,colorText: Colors.white);
        }
      }
      catch(e){
-       print(e);
+       Get.snackbar("Error", e.toString(),backgroundColor: Colors.redAccent,colorText: Colors.white);
+
      }finally{
+       mailController.text='';
+       password2Controller.text='';
+       firstnameController.text='';
+       lastnameController.text="";
+       immController.text="";
+       phoneController.text='';
        isDataLoading(false);
      }
    }
 
 
-   Future<bool> userToLocalStoreg(UserModel user) async {
+   Future<void> userToLocalStoreg(UserModel user) async {
      await seesion.write("isLogin", true);
      await seesion.write("email", user.email);
+     await seesion.write("userID", user.id);
      await seesion.write("name", user.nom);
      await seesion.write("firstname", user.prenom);
      await seesion.write("cin", user.cin);
      await seesion.write("phone", user.telephone);
-     return true;
+     print(seesion.read("phone")+"--------------------------------------------------"+seesion.read("cin"));
+
    }
 
 

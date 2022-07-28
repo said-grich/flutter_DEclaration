@@ -1,28 +1,53 @@
-class UserModel {
+import 'package:untitled/Model/UserModel.dart';
+
+class CommentModel {
+  int? idComment;
+  User user= new User();
+  String comment="";
+  String? date;
+  CommentModel({this.idComment, this.date});
+  CommentModel.fromJson(Map<String, dynamic> json) {
+    idComment = json['idComment'];
+    user = new User.fromJson(json['user']) ;
+    comment = json['comment'];
+    date = json['date'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['idComment'] = this.idComment;
+    if (this.user != null) {
+      data['user'] = this.user.toJson();
+    }
+    data['comment'] = this.comment;
+    data['date'] = this.date;
+    return data;
+  }
+}
+
+class User {
   int? id;
   String? email;
   bool? active;
   String? password;
-  String? nom;
-  String? prenom;
+  String nom="";
+  String prenom="";
   String? role;
   String? cin;
   String? telephone;
-  String? imm;
+  Null? imm;
 
-  UserModel(
+  User(
       {this.id,
         this.email,
         this.active,
         this.password,
-        this.nom,
-        this.prenom,
         this.role,
         this.cin,
         this.telephone,
         this.imm});
 
-  UserModel.fromJson(Map<String, dynamic> json) {
+  User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     email = json['email'];
     active = json['active'];

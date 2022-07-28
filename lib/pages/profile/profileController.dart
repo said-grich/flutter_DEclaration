@@ -14,33 +14,18 @@ import '../dashboard/dashboard_page.dart';
 
 class ProfileController extends GetxController{
 
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late TextEditingController emailController, passwordController,firstnameController,lastnameController,phoneController,immController;
   final seesion = GetStorage();
 
-  GlobalKey<FormState> get formKey => _formKey;
 
 
 
   @override
   void onInit() async{
     super.onInit();
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
-    firstnameController = TextEditingController();
-    lastnameController = TextEditingController();
-    phoneController = TextEditingController();
-    immController = TextEditingController();
-    await this.readFromLocalStorege();
+
   }
-  Future<void> readFromLocalStorege() async {
-    var islogin= seesion.read("isLogin");
-    this.emailController.text= seesion.read("email");
-    this.lastnameController.text=seesion.read("name");
-    this.firstnameController.text=seesion.read("firstname");
-    this.immController.text=seesion.read("cin");
-    this.phoneController.text=seesion.read("phone");
-  }
+
 
   @override
   void onReady() {
@@ -92,22 +77,17 @@ class ProfileController extends GetxController{
     return null;
   }
 
-  void checkLogin() {
-    final isValid = _formKey.currentState!.validate();
-    if (!isValid) {
-      return;
-    }
-    _formKey.currentState!.save();
-  }
 
   Future<void> logout() async {
-    seesion.write("isLogin", false);
+    await seesion.write("isLogin", false);
     await seesion.remove("email");
     await seesion.remove("phone");
     await seesion.remove("cin");
     await seesion.remove("firstname");
     await seesion.remove("name");
+    await seesion.remove("userID");
     Get.to(() => Login_page());
   }
+
 
 }

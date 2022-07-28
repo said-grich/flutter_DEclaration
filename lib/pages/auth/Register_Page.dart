@@ -6,6 +6,7 @@ import 'package:untitled/pages/auth/Login_page.dart';
 import 'package:untitled/pages/auth/RegisterController.dart';
 
 class Register_Page extends GetView<RegisterController> {
+  final GlobalKey<FormState> registerFormKey = new GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class Register_Page extends GetView<RegisterController> {
           height: context.height,
           child: SingleChildScrollView(
             child: Form(
-              key: controller.RegisterFormKey,
+              key: registerFormKey,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(
                 children: [
@@ -50,7 +51,6 @@ class Register_Page extends GetView<RegisterController> {
                       prefixIcon: Icon(Icons.perm_identity),
                     ),
                     keyboardType: TextInputType.text,
-                    obscureText: false,
                     controller: controller.lastnameController,
 
                     validator: (value) {
@@ -69,9 +69,7 @@ class Register_Page extends GetView<RegisterController> {
                       prefixIcon: Icon(Icons.perm_identity),
                     ),
                     keyboardType: TextInputType.text,
-                    obscureText: false,
                     controller: controller.firstnameController,
-
                     validator: (value) {
                       return controller.validName(value!);
                     },
@@ -88,15 +86,13 @@ class Register_Page extends GetView<RegisterController> {
                       labelText: "Email",
                       prefixIcon: Icon(Icons.email),
                     ),
-                    keyboardType: TextInputType.emailAddress,
-                    controller: controller.emailController,
-                    onSaved: (value) {
-                      controller.email = value!;
-                    },
+                    keyboardType: TextInputType.text,
+                    controller: controller.mailController,
                     validator: (value) {
                       return controller.validateEmail(value!);
                     },
                   ),
+
                   SizedBox(
                     height: 16,
                   ),
@@ -105,15 +101,12 @@ class Register_Page extends GetView<RegisterController> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      labelText: "Password",
-                      prefixIcon: Icon(Icons.lock),
+                      labelText: "mot de pass",
+                      prefixIcon: Icon(Icons.email),
                     ),
-                    keyboardType: TextInputType.visiblePassword,
+                    keyboardType: TextInputType.text,
+                    controller: controller.password2Controller,
                     obscureText: true,
-                    controller: controller.passwordController,
-                    onSaved: (value) {
-                      controller.password = value!;
-                    },
                     validator: (value) {
                       return controller.validatePassword(value!);
                     },
@@ -131,7 +124,6 @@ class Register_Page extends GetView<RegisterController> {
                       prefixIcon: Icon(Icons.phone),
                     ),
                     keyboardType: TextInputType.text,
-                    obscureText: false,
                     controller: controller.phoneController,
 
 
@@ -178,7 +170,7 @@ class Register_Page extends GetView<RegisterController> {
                         style: TextStyle(fontSize: 14, color: Colors.white),
                       ),
                       onPressed: () {
-                        controller.checkLogin();
+                        controller.checkSingup();
                       },
                     ),
                   ),
@@ -204,6 +196,7 @@ class Register_Page extends GetView<RegisterController> {
                       ),
                       onPressed: () {
                         Get.to(Login_page());
+
 
                       },
                     ),
