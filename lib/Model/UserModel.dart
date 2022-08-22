@@ -10,17 +10,18 @@ class UserModel {
   String? telephone;
   String? imm;
 
-  UserModel(
-      {this.id,
-        this.email,
-        this.active,
-        this.password,
-        this.nom,
-        this.prenom,
-        this.role,
-        this.cin,
-        this.telephone,
-        this.imm});
+  UserModel({
+    this.id,
+    this.email,
+    this.active,
+    this.password,
+    this.nom,
+    this.prenom,
+    this.role,
+    this.cin,
+    this.telephone,
+    this.imm,
+  });
 
   UserModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -36,17 +37,17 @@ class UserModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['email'] = this.email;
-    data['active'] = this.active;
-    data['password'] = this.password;
-    data['nom'] = this.nom;
-    data['prenom'] = this.prenom;
-    data['role'] = this.role;
-    data['cin'] = this.cin;
-    data['telephone'] = this.telephone;
-    data['imm'] = this.imm;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['email'] = email;
+    data['active'] = active;
+    data['password'] = password;
+    data['nom'] = nom;
+    data['prenom'] = prenom;
+    data['role'] = role;
+    data['cin'] = cin;
+    data['telephone'] = telephone;
+    data['imm'] = imm;
     return data;
   }
 }

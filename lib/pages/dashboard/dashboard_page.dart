@@ -8,23 +8,28 @@ import '../profile/profile_page.dart';
 import 'dashboard_controller.dart';
 
 class DashboardPage extends GetView<DashboardController> {
+
+  const DashboardPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-        return Scaffold(
-          body: SafeArea(
-            child:Obx((){
-             return IndexedStack(
+    return Scaffold(
+        body: SafeArea(
+          child: Obx(
+            () {
+              return IndexedStack(
                 index: controller.tabIndex.value,
                 children: [
                   HomePage(),
                   ComplaintPage(),
-                  Declarations_Page(),
+                  DeclarationsPage(),
                   AccountPage(),
                 ],
               );
-            })
+            },
           ),
-          bottomNavigationBar:Obx(()=>BottomNavigationBar(
+        ),
+        bottomNavigationBar: Obx(
+          () => BottomNavigationBar(
             unselectedItemColor: Colors.black,
             selectedItemColor: Colors.redAccent,
             onTap: controller.changeTabIndex,
@@ -52,8 +57,8 @@ class DashboardPage extends GetView<DashboardController> {
                 label: 'Profile',
               ),
             ],
-          ),)
-        );
+          ),
+        ));
   }
 
   _bottomNavigationBarItem({required IconData icon, required String label}) {

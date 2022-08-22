@@ -11,7 +11,6 @@ import '../../../Model/CommentModel.dart';
 import '../../../Model/EtatDeclarationModel.dart';
 import '../../complaintsWedgets/ComplaintDtailes.dart';
 import '../../complaintsWedgets/ComplaintListController.dart';
-import '../../dashboard/dashboard_page.dart';
 import '../../news/ComplaintModel.dart';
 
 

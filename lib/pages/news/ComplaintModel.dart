@@ -35,16 +35,16 @@ class ComplaintModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['dateDecl'] = this.dateDecl;
-    data['content'] = this.content;
-    data['title'] = this.title;
-    data['photoUri'] = this.photoUri;
-    data['longitude'] = this.longitude;
-    data['latitude'] = this.latitude;
-    data['adresse'] = this.adresse;
-    data['categ'] = this.categ;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['dateDecl'] = dateDecl;
+    data['content'] = content;
+    data['title'] = title;
+    data['photoUri'] = photoUri;
+    data['longitude'] = longitude;
+    data['latitude'] = latitude;
+    data['adresse'] = adresse;
+    data['categ'] = categ;
     return data;
   }
 }
@@ -67,11 +67,11 @@ class Photo {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['type'] = this.type;
-    data['declaration'] = this.declaration;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['type'] = type;
+    data['declaration'] = declaration;
     data['data'] = this.data;
     return data;
   }

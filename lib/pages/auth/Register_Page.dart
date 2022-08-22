@@ -1,45 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:untitled/pages/auth/Login_page.dart';
 import 'package:untitled/pages/auth/RegisterController.dart';
 
-class Register_Page extends GetView<RegisterController> {
-  final GlobalKey<FormState> registerFormKey = new GlobalKey<FormState>();
+import 'Login_page.dart';
+
+class RegisterPage extends GetView<RegisterController> {
+  const RegisterPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          margin: EdgeInsets.only(top: 60, left: 16, right: 16),
-          width: context.width,
-          height: context.height,
+          margin: const EdgeInsets.only(top: 60, left: 16, right: 16),
+          width: Get.width,
+          height: Get.height,
           child: SingleChildScrollView(
             child: Form(
-              key: registerFormKey,
+              key: GlobalKey<FormState>(),
               autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(
                 children: [
-                 Text(
-                      "Créer un Compte",
-                      style: GoogleFonts.poppins(fontSize: 35 ,color: Colors.black,fontWeight: FontWeight.bold),
-                    ),
-                  SizedBox(
+                  Text(
+                    "Créer un Compte",
+                    style: GoogleFonts.poppins(
+                        fontSize: 35,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
                     height: 20,
                   ),
                   Image.asset(
                     "assets/images/garbage.png",
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
-                  Text(
+                  const Text(
                     "Bienvenue à Ajiw",
                     style: TextStyle(fontSize: 20, color: Colors.black87),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   TextFormField(
@@ -48,16 +51,15 @@ class Register_Page extends GetView<RegisterController> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       labelText: "nom",
-                      prefixIcon: Icon(Icons.perm_identity),
+                      prefixIcon: const Icon(Icons.perm_identity),
                     ),
                     keyboardType: TextInputType.text,
-                    controller: controller.lastnameController,
-
+                    controller: controller.lastNameController,
                     validator: (value) {
-                      return controller.validName(value!);
+                      return controller.validName(value ?? "");
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   TextFormField(
@@ -66,25 +68,24 @@ class Register_Page extends GetView<RegisterController> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       labelText: "prénom",
-                      prefixIcon: Icon(Icons.perm_identity),
+                      prefixIcon: const Icon(Icons.perm_identity),
                     ),
                     keyboardType: TextInputType.text,
-                    controller: controller.firstnameController,
+                    controller: controller.firstNameController,
                     validator: (value) {
                       return controller.validName(value!);
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
-                  )
-              ,
+                  ),
                   TextFormField(
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                       labelText: "Email",
-                      prefixIcon: Icon(Icons.email),
+                      prefixIcon: const Icon(Icons.email),
                     ),
                     keyboardType: TextInputType.text,
                     controller: controller.mailController,
@@ -92,8 +93,7 @@ class Register_Page extends GetView<RegisterController> {
                       return controller.validateEmail(value!);
                     },
                   ),
-
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   TextFormField(
@@ -102,7 +102,7 @@ class Register_Page extends GetView<RegisterController> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       labelText: "mot de pass",
-                      prefixIcon: Icon(Icons.email),
+                      prefixIcon: const Icon(Icons.email),
                     ),
                     keyboardType: TextInputType.text,
                     controller: controller.password2Controller,
@@ -111,8 +111,7 @@ class Register_Page extends GetView<RegisterController> {
                       return controller.validatePassword(value!);
                     },
                   ),
-
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   TextFormField(
@@ -121,37 +120,29 @@ class Register_Page extends GetView<RegisterController> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       labelText: "telephone",
-                      prefixIcon: Icon(Icons.phone),
+                      prefixIcon: const Icon(Icons.phone),
                     ),
                     keyboardType: TextInputType.text,
                     controller: controller.phoneController,
-
-
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
-
-
                   TextFormField(
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                       labelText: "CIN",
-                      prefixIcon: Icon(Icons.perm_identity),
+                      prefixIcon: const Icon(Icons.perm_identity),
                     ),
                     keyboardType: TextInputType.text,
                     obscureText: false,
                     controller: controller.immController,
-
-
                   ),
-
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
-
                   ConstrainedBox(
                     constraints: BoxConstraints.tightFor(width: context.width),
                     child: ElevatedButton(
@@ -162,19 +153,20 @@ class Register_Page extends GetView<RegisterController> {
                           ),
                         ),
                         backgroundColor:
-                        MaterialStateProperty.all(Color(0xFFB1EA37)),
-                        padding: MaterialStateProperty.all(EdgeInsets.all(14)),
+                            MaterialStateProperty.all(const Color(0xFFB1EA37)),
+                        padding:
+                            MaterialStateProperty.all(const EdgeInsets.all(14)),
                       ),
-                      child: Text(
+                      child: const Text(
                         "Crée un Account",
                         style: TextStyle(fontSize: 14, color: Colors.white),
                       ),
                       onPressed: () {
-                        controller.checkSingup();
+                        controller.checksignUp();
                       },
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   ConstrainedBox(
@@ -187,21 +179,21 @@ class Register_Page extends GetView<RegisterController> {
                           ),
                         ),
                         backgroundColor:
-                        MaterialStateProperty.all(Colors.white),
-                        padding: MaterialStateProperty.all(EdgeInsets.all(14)),
+                            MaterialStateProperty.all(Colors.white),
+                        padding:
+                            MaterialStateProperty.all(const EdgeInsets.all(14)),
                       ),
-                      child: Text(
+                      child: const Text(
                         "Se connecter",
-                        style: TextStyle(fontSize: 14, color: Color(0xFFB1EA37)),
+                        style:
+                            TextStyle(fontSize: 14, color: Color(0xFFB1EA37)),
                       ),
                       onPressed: () {
-                        Get.to(Login_page());
-
-
+                        Get.to(LoginPage());
                       },
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 46,
                   ),
                 ],

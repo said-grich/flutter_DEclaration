@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,11 +17,11 @@ class ComplaintDetails extends StatefulWidget {
 }
 
 class _ComplaintDetailsState extends State<ComplaintDetails> {
+
   final controller = Get.put(ComplaintDetailesController());
-  final constant =new Constant();
+  final constant = Constant();
   @override
   Widget build(BuildContext context) {
-    print("=================>     "+controller.acctuelComplaint.value.adresse);
     controller.dateConroller.text=controller.acctuelComplaint.value.dateDecl;
     controller.descController.text=controller.acctuelComplaint.value.content;
     if(controller.acctuelComplaint.value.adresse!=null){

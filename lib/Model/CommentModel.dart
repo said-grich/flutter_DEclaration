@@ -1,26 +1,24 @@
-import 'package:untitled/Model/UserModel.dart';
 
 class CommentModel {
   int? idComment;
-  User user= new User();
-  String comment="";
+  User user = User();
+  String comment = "";
   String? date;
   CommentModel({this.idComment, this.date});
   CommentModel.fromJson(Map<String, dynamic> json) {
     idComment = json['idComment'];
-    user = new User.fromJson(json['user']) ;
+    user = User.fromJson(json['user']);
     comment = json['comment'];
     date = json['date'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['idComment'] = this.idComment;
-    if (this.user != null) {
-      data['user'] = this.user.toJson();
-    }
-    data['comment'] = this.comment;
-    data['date'] = this.date;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['idComment'] = idComment;
+    // it can't be null
+    data['user'] = user.toJson();
+    data['comment'] = comment;
+    data['date'] = date;
     return data;
   }
 }
@@ -30,22 +28,24 @@ class User {
   String? email;
   bool? active;
   String? password;
-  String nom="";
-  String prenom="";
+  String nom = "";
+  String prenom = "";
   String? role;
   String? cin;
   String? telephone;
-  Null? imm;
 
-  User(
-      {this.id,
-        this.email,
-        this.active,
-        this.password,
-        this.role,
-        this.cin,
-        this.telephone,
-        this.imm});
+  Null imm;
+
+  User({
+    this.id,
+    this.email,
+    this.active,
+    this.password,
+    this.role,
+    this.cin,
+    this.telephone,
+    this.imm,
+  });
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -61,17 +61,17 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['email'] = this.email;
-    data['active'] = this.active;
-    data['password'] = this.password;
-    data['nom'] = this.nom;
-    data['prenom'] = this.prenom;
-    data['role'] = this.role;
-    data['cin'] = this.cin;
-    data['telephone'] = this.telephone;
-    data['imm'] = this.imm;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['email'] = email;
+    data['active'] = active;
+    data['password'] = password;
+    data['nom'] = nom;
+    data['prenom'] = prenom;
+    data['role'] = role;
+    data['cin'] = cin;
+    data['telephone'] = telephone;
+    data['imm'] = imm;
     return data;
   }
 }

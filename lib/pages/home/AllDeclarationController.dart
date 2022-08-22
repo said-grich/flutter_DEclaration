@@ -6,11 +6,11 @@ import 'package:untitled/Model/EtatDeclarationModel.dart';
 import 'dart:convert';
 
 import 'package:untitled/pages/news/ComplaintModel.dart';
-class AllDeclarationController extends GetxController{
 
-  var declarationList= List<ComplaintModel>.empty(growable: true).obs;
-  var isDataLoading=true.obs;
-  final seesion = GetStorage();
+class AllDeclarationController extends GetxController {
+  var declarationList = List<ComplaintModel>.empty(growable: true).obs;
+  var isDataLoading = true.obs;
+  final session = GetStorage();
 
   @override
   Future<void> onInit() async {
@@ -18,48 +18,48 @@ class AllDeclarationController extends GetxController{
   }
 
   @override
-  void onClose() {
-
-  }
+  void onClose() {}
 
   @override
   Future<void> onReady() async {
     super.onReady();
-    await  getAllDeclaration();
+    await getAllDeclaration();
   }
+
   Future<void> getAllDeclaration() async {
     this.declarationList.value.clear();
-    this.isDataLoading.value=true;
-    try {var res= await http.get( Uri.parse(Constant().baseUrl+"declaration/"));
-      if((res.statusCode==200)){
+    this.isDataLoading.value = true;
+    try {
+      var res = await http.get(Uri.parse(Constant().baseUrl + "declaration/"));
+      if ((res.statusCode == 200)) {
         List jsonResponse = json.decode(res.body);
         jsonResponse.forEach((element) async {
-          var tmp =ComplaintModel.fromJson(element);
-          var res2= await http.get( Uri.parse(Constant().baseUrl+"declaration/etat/"+tmp.id.toString()));
-          if(res2.statusCode==200){
+          var tmp = ComplaintModel.fromJson(element);
+          var res2 = await http.get(Uri.parse(
+              Constant().baseUrl + "declaration/etat/" + tmp.id.toString()));
+          if (res2.statusCode == 200) {
             List jsonResponse2 = json.decode(res2.body);
-            var etats=[];
-            jsonResponse2.forEach((element) {etats.add(EtatDeclarationModel.fromJson(element)); });
-            etats.sort((b,a) {
-              var a1=a.dateEtat;
-              var b1=b.dateEtat;
+            var etats = [];
+            jsonResponse2.forEach((element) {
+              etats.add(EtatDeclarationModel.fromJson(element));
+            });
+            etats.sort((b, a) {
+              var a1 = a.dateEtat;
+              var b1 = b.dateEtat;
               return a1.compareTo(b1);
             });
 
-            tmp.listEtat=etats;
+            tmp.listEtat = etats;
             this.declarationList.value.add(tmp);
-
-          }else{
+          } else {
             print(res2.statusCode);
           }
         });
-
-      }else{
+      } else {
         Get.snackbar("Error", "Eroor Fetch");
       }
-    }
-    finally{
-      this.isDataLoading.value=false;
+    } finally {
+      this.isDataLoading.value = false;
     }
   }
 }

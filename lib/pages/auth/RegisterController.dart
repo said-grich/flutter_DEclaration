@@ -10,48 +10,42 @@ import '../../Constant.dart';
 import '../../Model/UserModel.dart';
 import '../dashboard/dashboard_page.dart';
 
+class RegisterController extends GetxController {
+  late TextEditingController mailController,
+      password2Controller,
+      firstNameController,
+      lastNameController,
+      phoneController,
+      immController;
 
-class RegisterController extends GetxController{
-  late TextEditingController mailController, password2Controller,firstnameController,lastnameController,phoneController,immController;
-  var email = '';
-  var password = '';
-  var firstname = '';
-  var lastname = '';
-  var phone = '';
-  var imm = '';
-   var isDataLoading = false.obs;
-   final seesion = GetStorage();
-   var isLogin=false;
-   @override
+  @override
   void onInit() {
     super.onInit();
     mailController = TextEditingController();
     password2Controller = TextEditingController();
-    firstnameController = TextEditingController();
-    lastnameController = TextEditingController();
+    firstNameController = TextEditingController();
+    lastNameController = TextEditingController();
     phoneController = TextEditingController();
     immController = TextEditingController();
-
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  String email = '',
+      password = '',
+      firstName = '',
+      lastname = '',
+      phone = '',
+      imm = '';
 
-  }
+  Rx<bool> isDataLoading = false.obs;
 
-  @override
-  void onClose() {
-    mailController.dispose();
-    password2Controller.dispose();
-    firstnameController.dispose();
-    lastnameController.dispose();
-    immController.dispose();
-    phoneController.dispose();
-  }
+  bool isLogin = false;
+  RegExp phoneRegExp = RegExp(
+      r'^(?:(?:(?:\+|00)212[\s]?(?:[\s]?\(0\)[\s]?)?)|0){1}(?:5[\s.-]?[2-3]|6[\s.-]?[13-9]){1}[0-9]{1}(?:[\s.-]?\d{2}){3}$');
+  final session = GetStorage();
 
   String? validateEmail(String value) {
-    if (!GetUtils.isEmail(value)) {
+    bool isValidEmail = GetUtils.isEmail(value);
+    if (!isValidEmail) {
       return "Fournir un e-mail valide";
     }
     return null;
@@ -63,98 +57,123 @@ class RegisterController extends GetxController{
     }
     return null;
   }
-  String? valid_phone(String value) {
-    var matcher =RegExp(r'^(?:(?:(?:\+|00)212[\s]?(?:[\s]?\(0\)[\s]?)?)|0){1}(?:5[\s.-]?[2-3]|6[\s.-]?[13-9]){1}[0-9]{1}(?:[\s.-]?\d{2}){3}$').hasMatch(value);
 
-    if (value.length < 10) {
-      return "numéro de téléphone invalide";
-    }
-    if(matcher==false){
+  String? validPhone(String value) {
+    bool isValidPhoneNumber = phoneRegExp.hasMatch(value);
+
+    if (value.length < 10 || !isValidPhoneNumber) {
       return "numéro de téléphone invalide";
     }
     return null;
   }
+
   String? validName(String value) {
     if (value.length < 2) {
       return "entrez un nom valide";
     }
 
-
-
     return null;
   }
 
-   Future<void> checkSingup() async{
+  Future<void> checksignUp() async {
     // final isValid = RegisterFormKey.currentState!.validate();
     // if (!isValid) {
-     await singup();
+    await signUp();
     // }
     // RegisterFormKey.currentState!.save();
   }
-   Future<void> singup() async {
-     try{
-       isDataLoading(true);
-       print(this.immController.text);
-       var res= await http.post(
-           Uri.parse(Constant().baseUrl+'auth/singup'),
-           headers: <String, String>{
-             'Content-Type': 'application/json; charset=UTF-8',
-           },
-           body: jsonEncode(<String, Object>{
-             'email': this.mailController.text,
-             'password': this.password2Controller.text,
-             'nom':this.lastnameController.text,
-             'prenom':this.firstnameController.text,
-             'telephone':this.phoneController.text,
-             'cin':this.immController.text,
-             'role':1,
-           }));
-       print(res.statusCode);
-       if (res.statusCode == 200) {
-         if(res.body== "-1"){
-           Get.snackbar("Error", "utilisateur existant",backgroundColor: Colors.redAccent,colorText: Colors.white);
 
-         }
-         else{
-           var user =UserModel.fromJson(jsonDecode(res.body));
-           Get.snackbar("Succes", "se connecter avec succes",backgroundColor: Colors.green,colorText: Colors.white);
+  Future<void> signUp() async {
+    try {
+      isDataLoading(true);
 
-           this.userToLocalStoreg(user);
-           Get.to(() => DashboardPage());
-         }
+      final res = await http.post(
+        Uri.parse('${Constant().baseUrl}auth/signUp'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          <String, Object>{
+            'email': mailController.text,
+            'password': password2Controller.text,
+            'nom': lastNameController.text,
+            'prenom': firstNameController.text,
+            'telephone': phoneController.text,
+            'cin': immController.text,
+            'role': 1,
+          },
+        ),
+      );
 
-       } else {
-         // If the server did not return a 200 OK response,
-         // then throw an exception.
-         Get.snackbar("Error", "Server Error",backgroundColor: Colors.redAccent,colorText: Colors.white);
-       }
-     }
-     catch(e){
-       Get.snackbar("Error", e.toString(),backgroundColor: Colors.redAccent,colorText: Colors.white);
+      if (res.statusCode == 200) {
+        if (res.body == "-1") {
+          showSnackBar(
+            title: "Error",
+            message: "utilisateur existant",
+          );
+        } else {
+          UserModel user = UserModel.fromJson(jsonDecode(res.body));
 
-     }finally{
-       mailController.text='';
-       password2Controller.text='';
-       firstnameController.text='';
-       lastnameController.text="";
-       immController.text="";
-       phoneController.text='';
-       isDataLoading(false);
-     }
-   }
+          showSnackBar(
+            title: "Success",
+            message: "se connecter avec succes",
+            backgroundColor: Colors.green,
+          );
+          userToLocalStoreg(user);
+          Get.to(DashboardPage());
+        }
+      } else {
+        // If the server did not return a 200 OK response,
+        // then throw an exception.
+        showSnackBar(title: "Error", message: "Server Error");
+      }
+    } catch (e) {
+      showSnackBar(title: "Error", message: "$e");
+    } finally {
+      // dispose ?
+
+      mailController.text = '';
+      password2Controller.text = '';
+      firstNameController.text = '';
+      lastNameController.text = "";
+      immController.text = '';
+      phoneController.text = '';
+      isDataLoading(false);
+    }
+  }
+
+  Future<void> userToLocalStoreg(UserModel user) async {
+    await session.write("isLogin", true);
+    await session.write("email", user.email);
+    await session.write("userID", user.id);
+    await session.write("name", user.nom);
+    await session.write("FirstName", user.prenom);
+    await session.write("cin", user.cin);
+    await session.write("phone", user.telephone);
+  }
 
 
-   Future<void> userToLocalStoreg(UserModel user) async {
-     await seesion.write("isLogin", true);
-     await seesion.write("email", user.email);
-     await seesion.write("userID", user.id);
-     await seesion.write("name", user.nom);
-     await seesion.write("firstname", user.prenom);
-     await seesion.write("cin", user.cin);
-     await seesion.write("phone", user.telephone);
-     print(seesion.read("phone")+"--------------------------------------------------"+seesion.read("cin"));
+  @override
+  void onClose() {
+    mailController.dispose();
+    password2Controller.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
+    immController.dispose();
+    phoneController.dispose();
+  }
 
-   }
-
-
+  showSnackBar({
+    String? title,
+    String? message,
+    Color? backgroundColor = Colors.red,
+    Color? colorText = Colors.white,
+  }) {
+    Get.snackbar(
+      title ?? '',
+      message ?? '',
+      backgroundColor: backgroundColor,
+      colorText: colorText,
+    );
+  }
 }

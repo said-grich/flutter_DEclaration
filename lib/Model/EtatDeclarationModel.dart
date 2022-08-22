@@ -12,12 +12,12 @@ class EtatDeclarationModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id_etatD'] = this.idEtatD;
-    if (this.etat != null) {
-      data['etat'] = this.etat!.toJson();
+    final Map<String, dynamic> data =  <String, dynamic>{};
+    data['id_etatD'] = idEtatD;
+    if (etat != null) {
+      data['etat'] = etat!.toJson();
     }
-    data['dateEtat'] = this.dateEtat;
+    data['dateEtat'] = dateEtat;
     return data;
   }
 }
@@ -34,9 +34,9 @@ class Etat {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id_et'] = this.idEt;
-    data['libelle'] = this.libelle;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id_et'] = idEt;
+    data['libelle'] = libelle;
     return data;
   }
 }

@@ -7,20 +7,18 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled/pages/profile/profileController.dart';
 
 class AccountPage extends GetView<ProfileController> {
-  final seesion = GetStorage();
+  final session = GetStorage();
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
-  var firstnameController = TextEditingController();
-  var lastnameController = TextEditingController();
+  var FirstNameController = TextEditingController();
+  var lastNameController = TextEditingController();
   var phoneController = TextEditingController();
   var immController = TextEditingController();
 
-
-
   @override
   Widget build(BuildContext context) {
-    if(seesion.read("email")!=null){
-       this.readFromLocalStorege();
+    if (session.read("email") != null) {
+      this.readFromLocalStorege();
     }
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     readFromLocalStorege();
@@ -38,17 +36,17 @@ class AccountPage extends GetView<ProfileController> {
                 children: [
                   Text(
                     "Profile",
-                    style: GoogleFonts.poppins(fontSize: 35 ,color: Colors.black,fontWeight: FontWeight.bold),
+                    style: GoogleFonts.poppins(
+                        fontSize: 35,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
                     height: 20,
                   ),
-
                   SizedBox(
                     height: 20,
                   ),
-
-
                   TextFormField(
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -59,8 +57,7 @@ class AccountPage extends GetView<ProfileController> {
                     ),
                     keyboardType: TextInputType.text,
                     obscureText: false,
-                    controller: this.lastnameController,
-
+                    controller: this.lastNameController,
                     validator: (value) {
                       return controller.validatePassword(value!);
                     },
@@ -78,16 +75,14 @@ class AccountPage extends GetView<ProfileController> {
                     ),
                     keyboardType: TextInputType.text,
                     obscureText: false,
-                    controller: this.firstnameController,
-
+                    controller: this.FirstNameController,
                     validator: (value) {
                       return controller.validName(value!);
                     },
                   ),
                   SizedBox(
                     height: 20,
-                  )
-                  ,
+                  ),
                   TextFormField(
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -98,7 +93,6 @@ class AccountPage extends GetView<ProfileController> {
                     ),
                     keyboardType: TextInputType.emailAddress,
                     controller: this.emailController,
-
                     validator: (value) {
                       return controller.validateEmail(value!);
                     },
@@ -117,12 +111,10 @@ class AccountPage extends GetView<ProfileController> {
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: true,
                     controller: this.passwordController,
-
                     validator: (value) {
                       return controller.validatePassword(value!);
                     },
                   ),
-
                   SizedBox(
                     height: 16,
                   ),
@@ -136,9 +128,7 @@ class AccountPage extends GetView<ProfileController> {
                     ),
                     keyboardType: TextInputType.text,
                     controller: this.immController,
-
                   ),
-
                   SizedBox(
                     height: 16,
                   ),
@@ -152,13 +142,10 @@ class AccountPage extends GetView<ProfileController> {
                     ),
                     keyboardType: TextInputType.text,
                     controller: this.phoneController,
-
                   ),
-
                   SizedBox(
                     height: 16,
                   ),
-
                   ConstrainedBox(
                     constraints: BoxConstraints.tightFor(width: context.width),
                     child: ElevatedButton(
@@ -169,7 +156,7 @@ class AccountPage extends GetView<ProfileController> {
                           ),
                         ),
                         backgroundColor:
-                        MaterialStateProperty.all(Color(0xFFB1EA37)),
+                            MaterialStateProperty.all(Color(0xFFB1EA37)),
                         padding: MaterialStateProperty.all(EdgeInsets.all(14)),
                       ),
                       child: Text(
@@ -194,7 +181,7 @@ class AccountPage extends GetView<ProfileController> {
                           ),
                         ),
                         backgroundColor:
-                        MaterialStateProperty.all(Colors.redAccent),
+                            MaterialStateProperty.all(Colors.redAccent),
                         padding: MaterialStateProperty.all(EdgeInsets.all(14)),
                       ),
                       child: Text(
@@ -202,7 +189,7 @@ class AccountPage extends GetView<ProfileController> {
                         style: TextStyle(fontSize: 14, color: Colors.white),
                       ),
                       onPressed: () {
-                                    controller.logout();
+                        controller.logout();
                       },
                     ),
                   ),
@@ -217,12 +204,13 @@ class AccountPage extends GetView<ProfileController> {
       ),
     );
   }
+
   Future<void> readFromLocalStorege() async {
-    var islogin= seesion.read("isLogin");
-    this.emailController.text= seesion.read("email");
-    this.lastnameController.text=seesion.read("name");
-    this.firstnameController.text=seesion.read("firstname");
-    this.immController.text=seesion.read("cin");
-    this.phoneController.text=seesion.read("phone");
+    var islogin = session.read("isLogin");
+    this.emailController.text = session.read("email");
+    this.lastNameController.text = session.read("name");
+    this.FirstNameController.text = session.read("FirstName");
+    this.immController.text = session.read("cin");
+    this.phoneController.text = session.read("phone");
   }
 }

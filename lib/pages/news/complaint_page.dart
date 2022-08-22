@@ -9,13 +9,14 @@ import 'complaint_controller.dart';
 
 
 class ComplaintPage extends GetView<ComplaintController> {
-  final GlobalKey<FormState> declarationKey = new GlobalKey<FormState>();
+  ComplaintPage({Key? key}) : super(key: key);
+  final GlobalKey<FormState> declarationKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          margin: EdgeInsets.only(top: 60, left: 16, right: 16),
+          margin: const EdgeInsets.only(top: 60, left: 16, right: 16),
           width: context.width,
           height: context.height,
           child: SingleChildScrollView(
@@ -34,7 +35,7 @@ class ComplaintPage extends GetView<ComplaintController> {
                     height: 300,
                   ),
 
-                  SizedBox(
+                  const SizedBox(
                     height: 3,
                   ),TextFormField(
                     decoration: InputDecoration(
@@ -42,14 +43,14 @@ class ComplaintPage extends GetView<ComplaintController> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       labelText: "Titre",
-                      prefixIcon: Icon(Icons.title),
+                      prefixIcon: const Icon(Icons.title),
                     ),
                     keyboardType: TextInputType.multiline,
                     controller: controller.titreConroller,
                     textInputAction: TextInputAction.newline,
 
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   TextField(
@@ -58,7 +59,7 @@ class ComplaintPage extends GetView<ComplaintController> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       labelText: "Description",
-                      prefixIcon: Icon(Icons.comment),
+                      prefixIcon: const Icon(Icons.comment),
                     ),
                     keyboardType: TextInputType.multiline,
                     controller: controller.descController,
@@ -67,7 +68,7 @@ class ComplaintPage extends GetView<ComplaintController> {
                     textInputAction: TextInputAction.newline,
 
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   TextFormField(
@@ -76,13 +77,13 @@ class ComplaintPage extends GetView<ComplaintController> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       labelText: "Address",
-                      prefixIcon: Icon(Icons.maps_home_work),
+                      prefixIcon: const Icon(Icons.maps_home_work),
                     ),
                     keyboardType: TextInputType.multiline,
                     controller: controller.addressController,
 
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   TextFormField(
@@ -91,12 +92,12 @@ class ComplaintPage extends GetView<ComplaintController> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       labelText: "Categorie",
-                      prefixIcon: Icon(Icons.category),
+                      prefixIcon: const Icon(Icons.category),
                     ),
                     keyboardType: TextInputType.multiline,
                     controller: controller.cateController,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
               Obx(
@@ -121,9 +122,9 @@ class ComplaintPage extends GetView<ComplaintController> {
                     ),
                     backgroundColor:
                     MaterialStateProperty.all(Colors.blueGrey),
-                    padding: MaterialStateProperty.all(EdgeInsets.all(14)),
+                    padding: MaterialStateProperty.all(const EdgeInsets.all(14)),
                   ),
-                  child: Text(
+                  child: const Text(
                     "choisir une photo",
                     style: TextStyle(fontSize: 14, color: Colors.white),
                   ),
@@ -139,7 +140,7 @@ class ComplaintPage extends GetView<ComplaintController> {
                               SizedBox(
                                 width: 120,
                                 child: ElevatedButton.icon(
-                                  icon:Icon(
+                                  icon:const Icon(
                                       Icons.camera_alt
                                   ),
                                   style: ButtonStyle(
@@ -149,25 +150,25 @@ class ComplaintPage extends GetView<ComplaintController> {
                                       ),
                                     ),
                                     backgroundColor:
-                                    MaterialStateProperty.all(Color(0xFFB1EA37)),
-                                    padding: MaterialStateProperty.all(EdgeInsets.all(14)),
+                                    MaterialStateProperty.all(const Color(0xFFB1EA37)),
+                                    padding: MaterialStateProperty.all(const EdgeInsets.all(14)),
                                   ),
-                                  label: Text(
+                                  label: const Text(
                                     "Camera",
-                                    style: TextStyle(fontSize: 14, color: Colors.white),
+                                    style: const TextStyle(fontSize: 14, color: Colors.white),
                                   ),
                                   onPressed: () {
                                     controller.getImage(ImageSource.camera);
                                   },
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 50,
                               ),
                               SizedBox(
                                 width: 120,
                                 child: ElevatedButton.icon(
-                                  icon:Icon(
+                                  icon:const Icon(
                                     Icons.photo_sharp
                                   ),
                                   style: ButtonStyle(
@@ -177,10 +178,10 @@ class ComplaintPage extends GetView<ComplaintController> {
                                       ),
                                     ),
                                     backgroundColor:
-                                    MaterialStateProperty.all(Color(0xFFB1EA37)),
-                                    padding: MaterialStateProperty.all(EdgeInsets.all(14)),
+                                    MaterialStateProperty.all(const Color(0xFFB1EA37)),
+                                    padding: MaterialStateProperty.all(const EdgeInsets.all(14)),
                                   ),
-                                  label: Text(
+                                  label: const Text(
                                     "Gallery",
                                     style: TextStyle(fontSize: 14, color: Colors.white),
                                   ),
@@ -197,7 +198,7 @@ class ComplaintPage extends GetView<ComplaintController> {
                   },
                 ),
               ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
 
@@ -211,10 +212,10 @@ class ComplaintPage extends GetView<ComplaintController> {
                           ),
                         ),
                         backgroundColor:
-                        MaterialStateProperty.all(Color(0xFFB1EA37)),
-                        padding: MaterialStateProperty.all(EdgeInsets.all(14)),
+                        MaterialStateProperty.all(const Color(0xFFB1EA37)),
+                        padding: MaterialStateProperty.all(const EdgeInsets.all(14)),
                       ),
-                      child: Text(
+                      child: const Text(
                         "Valide",
                         style: TextStyle(fontSize: 14, color: Colors.white),
                       ),
@@ -223,7 +224,7 @@ class ComplaintPage extends GetView<ComplaintController> {
                       },
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
 

@@ -1,46 +1,53 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled/pages/auth/LoginController.dart';
-import 'package:untitled/pages/auth/Register_Page.dart';
-class Login_page extends StatelessWidget{
-   Login_page({Key? key}) : super(key: key);
-  final controller = Get.put(LoginController());
-   GlobalKey loginFormKey=new GlobalKey<FormState>();
 
-   @override
+import 'Register_Page.dart';
+
+class LoginPage extends StatelessWidget {
+  LoginPage({Key? key}) : super(key: key);
+  final controller = Get.put(LoginController());
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          margin: EdgeInsets.only(top: 60, left: 16, right: 16),
-          width: context.width,
-          height: context.height,
+          margin: const EdgeInsets.only(top: 60, left: 16, right: 16),
+          width: Get.width,
+          height: Get.height,
           child: SingleChildScrollView(
             child: Form(
-              key: loginFormKey,
+              key: GlobalKey<FormState>(),
               autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left:15, bottom: 40, right: 20, top:10),
+                    padding: const EdgeInsets.only(
+                        left: 15, bottom: 40, right: 20, top: 10),
                     child: Text(
                       "Login",
-                      style: GoogleFonts.poppins(fontSize: 44 ,color: Colors.black,fontWeight: FontWeight.bold),
+                      style: GoogleFonts.poppins(
+                          fontSize: 44,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                   Image.asset(
                     "assets/images/garbage.png",
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
-                  Text(
+                  const Text(
                     "Bienvenue à Ajiw",
-                    style: TextStyle(fontSize: 20, color: Colors.black87),
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black87,
+                    ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   TextFormField(
@@ -49,16 +56,15 @@ class Login_page extends StatelessWidget{
                         borderRadius: BorderRadius.circular(10),
                       ),
                       labelText: "Email",
-                      prefixIcon: Icon(Icons.email),
+                      prefixIcon: const Icon(Icons.email),
                     ),
                     keyboardType: TextInputType.text,
                     controller: controller.emailController,
-
                     validator: (value) {
                       return controller.validateEmail(value!);
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   TextFormField(
@@ -67,7 +73,7 @@ class Login_page extends StatelessWidget{
                         borderRadius: BorderRadius.circular(10),
                       ),
                       labelText: "mot de pass",
-                      prefixIcon: Icon(Icons.password),
+                      prefixIcon: const Icon(Icons.password),
                     ),
                     keyboardType: TextInputType.text,
                     controller: controller.pdController,
@@ -76,11 +82,11 @@ class Login_page extends StatelessWidget{
                       return controller.validatePassword(value!);
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   ConstrainedBox(
-                    constraints: BoxConstraints.tightFor(width: context.width),
+                    constraints: BoxConstraints.tightFor(width: Get.width),
                     child: ElevatedButton(
                       style: ButtonStyle(
                         shape: MaterialStateProperty.all(
@@ -89,19 +95,23 @@ class Login_page extends StatelessWidget{
                           ),
                         ),
                         backgroundColor:
-                        MaterialStateProperty.all(Color(0xFFB1EA37)),
-                        padding: MaterialStateProperty.all(EdgeInsets.all(14)),
+                            MaterialStateProperty.all(const Color(0xFFB1EA37)),
+                        padding:
+                            MaterialStateProperty.all(const EdgeInsets.all(14)),
                       ),
-                      child: Text(
+                      child: const Text(
                         "Se connecter",
-                        style: TextStyle(fontSize: 14, color: Colors.white),
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.white,
+                        ),
                       ),
                       onPressed: () {
                         controller.checkLogin();
                       },
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   ConstrainedBox(
@@ -114,15 +124,19 @@ class Login_page extends StatelessWidget{
                           ),
                         ),
                         backgroundColor:
-                        MaterialStateProperty.all(Colors.white),
-                        padding: MaterialStateProperty.all(EdgeInsets.all(14)),
+                            MaterialStateProperty.all(Colors.white),
+                        padding:
+                            MaterialStateProperty.all(const EdgeInsets.all(14)),
                       ),
-                      child: Text(
-                        "Crée un Account",
-                        style: TextStyle(fontSize: 14, color: Color(0xFFB1EA37)),
+                      child: const Text(
+                        "Créer un Account",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Color(0xFFB1EA37),
+                        ),
                       ),
                       onPressed: () {
-                        Get.to(Register_Page());
+                        Get.to(const RegisterPage());
                       },
                     ),
                   ),
@@ -134,5 +148,4 @@ class Login_page extends StatelessWidget{
       ),
     );
   }
-
 }
